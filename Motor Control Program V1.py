@@ -55,7 +55,7 @@ class MotorControlApp:
         self.label_test_selection = tk.Label(root, text="Test Selection:")
         self.label_test_selection.grid(row=6, column=1, padx=10, pady=10, sticky=tk.W)
 
-        self.test_options = ["None", "Lifetime", "CARLL", "Center Structure CARLL", "BFALTA", "Torsion", "Side Push"]
+        self.test_options = ["None", "Lifetime", "CARLL", "Center Structure CARLL", "BFALTA", "Torsion", "Side Push", "Gear Box Testing"]
         self.selected_test = tk.StringVar()
         self.selected_test.set("None")
         self.test_dropdown = tk.OptionMenu(root, self.selected_test, *self.test_options)
@@ -141,7 +141,10 @@ class MotorControlApp:
                 self.test_running = True
                 self.label_test_status.config(text="Test Status: Running", bg="green")
                 self.label_motor_direction.config(text="Motor Direction: None")
+									  
+																
                 self.button_end_test.config(state=tk.NORMAL)
+
                 self.motor_thread = threading.Thread(target=self.run_test)
                 self.motor_thread.start()
             except ValueError:
@@ -150,10 +153,11 @@ class MotorControlApp:
             self.label_test_status.config(text="Error: Please enter both Test Name and Max Cycle Count.")
 
     def stop_test(self):
+			
         self.test_running = False
-        self.stop_flag = True
+        self.stop_flag = True					
         self.label_test_status.config(text="Test Status: Not Running", bg="red")
-        self.label_motor_direction.config(text="Motor Direction: None")
+        self.label_motor_direction.config(text="Motor Direction: None")			  
         self.button_end_test.config(state=tk.DISABLED)
         if self.motor_thread and self.motor_thread.is_alive():
             self.motor_thread.join()
@@ -169,6 +173,7 @@ class MotorControlApp:
                 break
             # Rotate motor clockwise
             self.label_motor_direction.config(text="Motor Direction: Clockwise")
+																	  
             for i in range(5, 0, -1):
                 self.label_clockwise_countdown.config(text=f"Clockwise: {i}")
                 time.sleep(1)
@@ -177,6 +182,7 @@ class MotorControlApp:
 
             # Rotate motor counterclockwise
             self.label_motor_direction.config(text="Motor Direction: Counter-Clockwise")
+																					 
             for i in range(5, 0, -1):
                 self.label_counterclockwise_countdown.config(text=f"Counter-Clockwise: {i}")
                 time.sleep(1)
